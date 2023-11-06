@@ -28,6 +28,9 @@ except Exception as e:
 
 
 def is_within_3_days(date_str):
+    # 指定天数内
+    num = 1
+
     # 解析日期字符串为日期对象
     date = datetime.strptime(date_str, '%Y-%m-%d')
 
@@ -35,10 +38,11 @@ def is_within_3_days(date_str):
     today = datetime.today()
 
     # 计算3天内的日期
-    three_days = today - timedelta(days=3)
+    three_days = today - timedelta(days=num)
 
     # 比较日期对象与当前日期和3天后的日期
     if today >= date >= three_days:
+        print(f'>> 当前时间为{today},报道时间为{date}，在{num}1天时间内')
         return True
     else:
         return False
@@ -88,6 +92,8 @@ class ContentParser:
         if not href.startswith('http://') and not href.startswith('https://'):
             # print(f'raw_href: {href}, charge_href:{self.referer + href}')
             return self.referer + href
+        else:
+            return href
 
     def get_content(self):
 
@@ -104,6 +110,7 @@ class ContentParser:
                 date = date_element.text.strip()
 
                 if is_within_3_days(date):
+                    print(f'--收录报道{title},{date}')
                     a = f'<a href="{href}">{title}</a>'
                     content += f"<p>{i}. {a} {date}</p>\n"
                     i += 1
@@ -157,6 +164,9 @@ def main():
     # html
     result = ''.join([c_p.get_item() for c_p in content_parser_list])
 
+    # 测试-检查最新添加内容；需注释上一行内容
+    # result = ''.join(content_parser_list[-1].get_item())
+
     output = f"""
     <html>
     <body>
@@ -174,4 +184,4 @@ if __name__ == '__main__':
 
     communication = main()
 
-    send_email(title, communication, EMAIL_PASSWORD, EMAIL_SENDER, EMAIL_RECIVER)
+    # send_email(title, communication, EMAIL_PASSWORD, EMAIL_SENDER, EMAIL_RECIVER)
