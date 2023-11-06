@@ -184,4 +184,4 @@ if __name__ == '__main__':
 
     communication = main()
 
-    # send_email(title, communication, EMAIL_PASSWORD, EMAIL_SENDER, EMAIL_RECIVER)
+    send_email(title, communication, EMAIL_PASSWORD, EMAIL_SENDER, EMAIL_RECIVER)
