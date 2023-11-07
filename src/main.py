@@ -28,6 +28,11 @@ except Exception as e:
 
 
 def is_within_3_days(date_str):
+
+    # 解决报错ValueError: time data '2023.11.03' does not match format '%Y-%m-%d'
+    if '.' in date_str:
+        date_str = date_str.replace('.', '-')
+
     # 指定天数内
     num = 1
 
@@ -42,7 +47,7 @@ def is_within_3_days(date_str):
 
     # 比较日期对象与当前日期和3天后的日期
     if today >= date >= three_days:
-        print(f'>> 当前时间为{today},报道时间为{date}，在{num}1天时间内')
+        print(f'>> 当前时间为{today},报道时间为{date}，在{num}天时间内')
         return True
     else:
         return False
@@ -175,7 +180,7 @@ def main():
     </html>
     """
 
-    print(f'以下为爬取结果：\n', output)
+    print(f'-------------------------以下为爬取结果：-------------------------\n', output)
     return output
 
 
