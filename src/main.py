@@ -70,11 +70,14 @@ class ContentParser:
         print(f'Starting parse for object: {self.object}')  # 开始解析对象时打印的信息
         time.sleep(1.0)
         # 使用request+bs4
-        r = requests.get(
-            self.original_url,
-            headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 Edg/118.0.2088.69"}
-        )
+        try:
+            r = requests.get(
+                self.original_url,
+                headers={
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 Edg/118.0.2088.69"}
+            )
+        except Exception as e: # 解决部分网页因qiang无法顺利request
+            return zip('', e, '')
 
         encoding = self.detect_encoding(r.content)
         print(f'{self.object}-encoding: {encoding}')
